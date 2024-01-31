@@ -1,42 +1,45 @@
 // toggle icon navbar//
-
 let menuIcon = document.querySelector("#menu-icon");
 let navbar = document.querySelector(".navbar");
 
-menuIcon.onclick = () => {
-  menuIcon.classList.toggle("bx-x");
-  navbar.classList.toggle("active");
-};
-// Scroll section active link //
+document.addEventListener("DOMContentLoaded", function () {
 
-let sections = document.querySelectorAll("section");
-let navlinks = document.querySelectorAll("header nav a");
+  menuIcon.onclick = () => {
+    menuIcon.classList.toggle("bx-x");
+    navbar.classList.toggle("active");
+  };
 
-window.onscroll = () => {
-  sections.forEach((sec) => {
-    let top = window.scrollY;
-    let offset = sec.offsetTop - 150;
-    let height = sec.offsetHeight;
-    let id = sec.getAttribute("id");
+  // Scroll section active link //
+  let sections = document.querySelectorAll("section");
+  let navlinks = document.querySelectorAll("header nav a");
 
-    if (top >= offset && top < offset + height) {
-      navlinks.forEach((links) => {
-        links.classList.remove("active");
-        document
-          .querySelector("header nav a[href*=" + id + "]")
-          .classList.add("active");
-      });
-    }
-  });
+  window.onscroll = () => {
+    sections.forEach((sec) => {
+      let top = window.scrollY;
+      let offset = sec.offsetTop - 150;
+      let height = sec.offsetHeight;
+      let id = sec.getAttribute("id");
 
-  //    sticky navbar  //
-  let header = document.querySelector("header");
-  header.classList.toggle("sticky", window.scrollY > 100);
+      if (top >= offset && top < offset + height) {
+        navlinks.forEach((links) => {
+          links.classList.remove("active");
+          document
+            .querySelector("header nav a[href*=" + id + "]")
+            .classList.add("active");
+        });
+      }
+    });
+  };
+});
 
-  /*==================== remove toggle icon and navbar when click navbar link (scroll) ====================*/
-  menuIcon.classList.remove("bx-x");
-  navbar.classList.remove("active");
-};
+
+//    sticky navbar  //
+let header = document.querySelector("header");
+header.classList.toggle("sticky", window.scrollY > 100);
+
+/*==================== remove toggle icon and navbar when click navbar link (scroll) ====================*/
+menuIcon.classList.remove("bx-x");
+navbar.classList.remove("active");
 
 /*==================== scroll reveal ====================*/
 ScrollReveal({
@@ -146,3 +149,70 @@ slider.addEventListener('mousemove', (e) => {
 
   slider.scrollLeft = scrollLeft - walk;
 })
+
+
+//  contact section 
+const form = document.querySelector('form');
+
+const fullName = document.getElementById('full-name');
+const email = document.getElementById('email-address');
+const mobileNumber = document.getElementById('mobile-number');
+const subject = document.getElementById('email-subject');
+const msg = document.getElementById('message');
+
+
+function sendEmail() {
+  const bodyMessage = `Full Name: ${fullName.value}<br> Email: ${email.value}
+  <br> Phone Number: ${mobileNumber.value}<br> Message:${msg.value}`
+
+  Email.send({
+    Host: "smtp.elasticemail.com",
+    Username: "sriramviswanathan1998@gmail.com",
+    Password: "70F22CA5390E373E31A827B06735CFCBC365",
+    To: 'sriramviswanathan2@gmail.com',
+    From: "sriramviswanathan2@gmail.com",
+    Subject: subject,
+    Body: bodyMessage
+  }).then(
+    message => {
+      if (message == 'OK') {
+        Swal.fire({
+          title: "Message Sent Successfully!",
+          text: "Thank you for your response!",
+          icon: "success"
+        });
+      }
+    }
+  );
+}
+
+function checkInputs() {
+  const items = document.querySelectorAll('.contact-item');
+  for (const item of items) {
+    if (item.value == "") {
+      item.classList.add('error');
+      item.classList.add('error');
+    }
+
+    item.addEventListener('keyup', () => {
+      if (item.value !== '') {
+        item.classList.remove('error');
+        item.parentElement.classList.remove('error');
+      } else {
+        item.classList.add('error');
+        item.parentElement.classList.add('error');
+      }
+    })
+  }
+}
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  sendEmail();
+  checkInputs();
+});
+
+
+
+
+
